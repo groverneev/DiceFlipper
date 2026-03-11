@@ -1,7 +1,8 @@
 import SwiftUI
 
 class DiceRollViewModel: ObservableObject {
-    @Published var rotationDegrees: Double = 0
+    @Published var yRotation: Double = 0
+    @Published var xRotation: Double = 0
     @Published var scale: CGFloat = 1.0
     @Published var isRolling: Bool = false
     @Published var displayResult: Int = 1
@@ -13,14 +14,17 @@ class DiceRollViewModel: ObservableObject {
 
         let result = Int.random(in: 1...sides)
 
+        // Phase 1: tumble through the air — 2 full Y-spins + 20° overshoot, 1 full X-tilt
         withAnimation(.easeIn(duration: 0.35)) {
-            rotationDegrees += 1080
+            yRotation += 740   // 720° (2 spins) + 20° overshoot
+            xRotation += 360   // 1 full forward tilt
             scale = 1.15
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+            // Phase 2: spring back from overshoot — die "lands" and wobbles to rest face-up
             withAnimation(.spring(response: 0.45, dampingFraction: 0.45)) {
-                self.rotationDegrees += 45
+                self.yRotation -= 20   // correct overshoot → lands at multiple of 360° (face-up)
                 self.scale = 1.0
             }
 

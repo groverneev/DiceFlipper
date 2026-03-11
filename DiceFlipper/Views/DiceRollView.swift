@@ -13,7 +13,8 @@ struct DiceRollView: View {
             Spacer()
 
             DiceFaceView(sides: appState.diceSides, result: vm.displayResult)
-                .rotationEffect(.degrees(vm.rotationDegrees))
+                .rotation3DEffect(.degrees(vm.yRotation), axis: (x: 0, y: 1, z: 0), perspective: 0.4)
+                .rotation3DEffect(.degrees(vm.xRotation), axis: (x: 1, y: 0, z: 0), perspective: 0.4)
                 .scaleEffect(vm.scale)
 
             Text("Tap or shake")
