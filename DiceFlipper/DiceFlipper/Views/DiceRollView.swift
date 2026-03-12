@@ -13,10 +13,16 @@ struct DiceRollView: View {
 
             Spacer()
 
-            DiceFaceView(sides: appState.diceSides, result: vm.displayResult)
-                .rotation3DEffect(.degrees(vm.yRotation), axis: (x: 0, y: 1, z: 0), perspective: 0.4)
-                .rotation3DEffect(.degrees(vm.xRotation), axis: (x: 1, y: 0, z: 0), perspective: 0.4)
-                .scaleEffect(vm.scale)
+            ZStack {
+                DiceFaceView(sides: appState.diceSides, result: vm.displayResult)
+                    .opacity(vm.isRolling ? 0 : 1)
+
+                DiceTumbleView(sides: appState.diceSides, isRolling: vm.isRolling)
+                    .opacity(vm.isRolling ? 1 : 0)
+            }
+            .frame(width: 200, height: 200)
+            .animation(.easeInOut(duration: 0.12), value: vm.isRolling)
+            .scaleEffect(vm.scale)
 
             Text("Tap or shake")
                 .font(.system(size: 15, design: .rounded))

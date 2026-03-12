@@ -85,6 +85,18 @@ private struct PolygonDie: View {
         RegularPolygon(sides: sides, rotationOffset: rotationOffset)
             .fill(LinearGradient(colors: colors, startPoint: .topLeading, endPoint: .bottomTrailing))
             .overlay(
+                // Specular highlight — upper-left light source gives perceived depth
+                RegularPolygon(sides: sides, rotationOffset: rotationOffset)
+                    .fill(
+                        RadialGradient(
+                            colors: [.white.opacity(0.45), .clear],
+                            center: UnitPoint(x: 0.3, y: 0.25),
+                            startRadius: 0,
+                            endRadius: 85
+                        )
+                    )
+            )
+            .overlay(
                 RegularPolygon(sides: sides, rotationOffset: rotationOffset)
                     .stroke(.white.opacity(0.15), lineWidth: 2)
             )
