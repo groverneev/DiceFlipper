@@ -192,6 +192,15 @@ struct D6DiceView: UIViewRepresentable {
             borderPath.lineWidth = 4
             borderPath.stroke()
 
+            UIColor(red: 0.42, green: 0.47, blue: 0.60, alpha: 0.92).setStroke()
+            let outerBorderRect = rect.insetBy(dx: 18, dy: 18)
+            let outerBorderPath = UIBezierPath(
+                roundedRect: outerBorderRect,
+                cornerRadius: cornerRadius - 18
+            )
+            outerBorderPath.lineWidth = 10
+            outerBorderPath.stroke()
+
             let highlightGradient = CGGradient(
                 colorsSpace: CGColorSpaceCreateDeviceRGB(),
                 colors: [
