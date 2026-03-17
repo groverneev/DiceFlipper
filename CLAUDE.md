@@ -50,6 +50,12 @@ There is a stale sibling copy at `DiceFlipper/` (single-nested) — **do not edi
 - Phase 2: `.spring(response: 0.45, dampingFraction: 0.45)` → `yRotation -= 20` (spring corrects overshoot back to face-up), `scale = 1.0`
 - Die always lands face-up (yRotation and xRotation are always multiples of 360° at rest)
 
+### D6 SceneKit Roll
+- `Views/D6DiceView.swift` is the active six-sided die path; it no longer uses `isRolling` alone and instead animates from a roll trigger plus a target face value
+- `ViewModels/DiceRollViewModel.swift` exposes `d6RollTrigger` and `d6TargetResult`; the d6 result is chosen at roll start so SceneKit can land on the rolled face instead of snapping after the animation
+- The d6 roll must finish in a valid resting quaternion for faces 1...6; use the explicit face-up orientation table and only vary yaw for presentation
+- D6 haptics and `isRolling` reset happen from the SceneKit completion callback so the visible landing and state transition stay aligned
+
 ### Dice Shapes
 Each standard die renders its real polygon shape via `RegularPolygon` (a custom `Shape`):
 - d4: triangle up (orange), d6: rounded square with pips (purple), d8: diamond (blue)

@@ -15,8 +15,12 @@ struct DiceRollView: View {
 
             Group {
                 if appState.diceSides == 6 {
-                    // Real 3D cube — handles both static and rolling states internally
-                    D6DiceView(result: vm.displayResult, isRolling: vm.isRolling)
+                    D6DiceView(
+                        result: vm.displayResult,
+                        targetResult: vm.d6TargetResult,
+                        rollTrigger: vm.d6RollTrigger,
+                        onRollComplete: vm.completeD6Roll
+                    )
                 } else {
                     ZStack {
                         DiceFaceView(sides: appState.diceSides, result: vm.displayResult)
@@ -59,6 +63,9 @@ struct DiceRollView: View {
         .onChange(of: appState.diceSides) { _, newSides in
             vm.displayResult = min(vm.displayResult, newSides)
             if vm.displayResult < 1 { vm.displayResult = 1 }
+            if newSides == 6 {
+                vm.d6TargetResult = vm.displayResult
+            }
         }
     }
 }
